@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" class="dark">
+<html lang="en" dir="ltr" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JumaPay | Global Digital Store</title>
+    <title>JumaPay | Global Digital Marketplace</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -15,400 +15,281 @@
                         cyberBlack: '#0a0b10',
                         cyberDark: '#121420',
                         cyberCard: '#1a1d2e',
+                        cyberInput: '#141724',
                         neonBlue: '#00f0ff',
                         neonOrange: '#ff5500',
                     },
                     boxShadow: {
-                        'neon-blue': '0 0 15px rgba(0, 240, 255, 0.4)',
-                        'neon-orange': '0 0 15px rgba(255, 85, 0, 0.4)',
+                        'neon-blue': '0 0 15px rgba(0, 240, 255, 0.3)',
+                        'neon-orange': '0 0 15px rgba(255, 85, 0, 0.3)',
                     }
                 }
             }
         }
     </script>
 </head>
-<body class="bg-cyberBlack text-gray-100 min-h-screen font-sans flex flex-col justify-between pb-16 md:pb-0 selection:bg-neonBlue selection:text-cyberBlack">
+<body class="bg-cyberBlack text-gray-100 min-h-screen font-sans flex flex-col justify-between pb-20 md:pb-0 selection:bg-neonBlue selection:text-cyberBlack">
 
-    <!-- Header / Navbar -->
-    <header class="border-b border-gray-800 bg-cyberDark/95 backdrop-blur-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
-            
+    <!-- Top Header -->
+    <header class="border-b border-gray-800/80 bg-cyberDark/95 backdrop-blur-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
             <!-- Brand Logo -->
-            <div class="text-xl font-black tracking-wider text-neonBlue shrink-0">
+            <div class="text-xl md:text-2xl font-black tracking-wider text-neonBlue shrink-0 drop-shadow-[0_0_8px_rgba(0,240,255,0.5)] cursor-pointer" onclick="switchView('home')">
                 JUMA<span class="text-neonOrange">PAY</span>
             </div>
 
-            <!-- Search Bar (G2A Style) -->
+            <!-- Search Bar -->
             <div class="flex-1 max-w-xl relative">
-                <span class="absolute right-3 top-2.5 text-gray-400">🔍</span>
-                <input type="text" id="searchInput" placeholder="ابحث عن لعبتك المفضلة، بطاقات ستيم، بلايستيشن..." class="w-full bg-cyberBlack border border-gray-700 rounded-full pr-10 pl-4 py-2 text-xs md:text-sm text-gray-200 focus:outline-none focus:border-neonBlue transition">
+                <span class="absolute left-4 top-2.5 text-gray-400 text-sm">🔍</span>
+                <input type="text" id="globalSearch" placeholder="What are you looking for?" class="w-full bg-cyberInput border border-gray-800 rounded-full pl-10 pr-4 py-2 text-xs md:text-sm text-gray-200 focus:outline-none focus:border-neonBlue transition">
             </div>
 
-            <!-- Wallet & Language Controls -->
+            <!-- Wallet Quick Balance -->
             <div class="flex items-center gap-2 shrink-0">
-                <div class="hidden sm:flex items-center bg-cyberBlack border border-neonOrange/40 rounded-xl px-3 py-1.5 gap-2">
-                    <span class="text-xs text-gray-400">💼 الرصيد:</span>
+                <div class="flex items-center bg-cyberBlack border border-neonOrange/40 rounded-full px-3 py-1 gap-2 shadow-neon-orange">
+                    <span class="text-[11px] text-gray-400">💼</span>
                     <span id="userBalance" class="text-xs font-black text-neonOrange">$0.00</span>
-                    <button onclick="openTopUpModal()" class="bg-neonOrange text-cyberBlack text-[10px] font-bold px-2 py-0.5 rounded hover:bg-orange-600 transition">+ شحن</button>
+                    <button onclick="openModal('topUpModal')" class="bg-neonOrange text-cyberBlack text-[10px] font-bold px-2 py-0.5 rounded-full hover:bg-orange-600 transition">+ Top Up</button>
                 </div>
-
-                <!-- Language Switcher -->
-                <select id="langSelect" onchange="switchLanguage(this.value)" class="bg-cyberBlack text-neonBlue border border-neonBlue/40 rounded-xl px-2 py-1.5 text-xs focus:outline-none cursor-pointer">
-                    <option value="ar">🇸🇦 AR</option>
-                    <option value="en">🇬🇧 EN</option>
-                    <option value="ru">🇷🇺 RU</option>
-                    <option value="fr">🇫🇷 FR</option>
-                    <option value="es">🇪🇸 ES</option>
-                    <option value="tr">🇹🇷 TR</option>
-                </select>
             </div>
         </div>
     </header>
-
-    <!-- Main Section -->
-    <main class="max-w-7xl mx-auto px-4 py-6 w-full space-y-8">
+    <!-- Main Dynamic Views Area -->
+    <main class="max-w-7xl mx-auto px-4 py-6 w-full flex-1">
         
-        <!-- Hero Deal of the Day Banner (G2A Style) -->
-        <section class="bg-gradient-to-r from-blue-950/40 to-cyberDark border border-neonBlue/30 rounded-2xl p-5 md:p-8 relative overflow-hidden shadow-lg">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-                <div class="space-y-3 text-center md:text-right">
-                    <div class="inline-flex items-center gap-2 bg-neonOrange/20 border border-neonOrange/40 px-3 py-1 rounded-full text-xs font-bold text-neonOrange">
-                        ⏳ ينتهي عرض اليوم خلال: <span id="dealTimer" class="font-mono">18 : 16 : 59</span>
+        <!-- View 1: HOME PAGE -->
+        <div id="view-home" class="space-y-8">
+            <!-- Deal of the day Banner -->
+            <section class="bg-gradient-to-r from-orange-950/40 via-cyberDark to-blue-950/40 border border-neonOrange/30 rounded-2xl p-4 md:p-6 relative overflow-hidden shadow-neon-orange">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="space-y-3 text-left w-full">
+                        <div class="inline-flex items-center gap-2 bg-neonOrange/20 border border-neonOrange/40 px-3 py-1 rounded-full text-xs font-bold text-neonOrange">
+                            Deal of the day ends in: <span class="font-mono text-white bg-black/50 px-2 py-0.5 rounded">07 : 39 : 03</span>
+                        </div>
+                        <h1 class="text-base md:text-xl font-extrabold text-white">Steam Sale Random 1 Key (PC) - Steam Key - GLOBAL</h1>
+                        <p class="text-xs text-gray-400">Steam • Key • GLOBAL</p>
+                        <div class="flex items-center gap-3 pt-1">
+                            <span class="text-2xl font-black text-neonOrange">2.15 USD</span>
+                            <span class="text-xs bg-red-500/20 text-red-400 border border-red-500/30 px-2 py-0.5 rounded font-bold">-94%</span>
+                        </div>
                     </div>
-                    <h1 class="text-xl md:text-3xl font-extrabold text-white">GTA VI & Exclusive Game Bundle</h1>
-                    <p class="text-xs md:text-sm text-gray-400 max-w-md">احصل على الكود الأصلي فوراً وبدون رسوم بنكية مرتفعة. تسليم آلي 100%.</p>
+                    <div class="bg-cyberCard border border-gray-800 p-4 rounded-xl text-center space-y-3 shrink-0 w-full md:w-64">
+                        <div class="text-[11px] text-gray-400 flex justify-between"><span>Left 200</span><span>Sold 0</span></div>
+                        <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                            <div class="bg-neonOrange h-full w-3/4"></div>
+                        </div>
+                        <button onclick="openCheckout('Steam Sale Random 1 Key', 2.15)" class="w-full bg-neonBlue text-cyberBlack text-xs font-bold py-2.5 rounded-xl hover:bg-cyan-400 transition shadow-neon-blue">Add to cart 🛒</button>
+                    </div>
                 </div>
-                <div class="bg-cyberCard border border-gray-700 p-4 rounded-xl text-center space-y-2 shrink-0 w-full md:w-64">
-                    <span class="text-xs text-gray-400">السعر الرسمي العادل</span>
-                    <div class="text-2xl font-black text-neonOrange">$5.44 <span class="text-xs text-gray-400 line-through">$8.40</span></div>
-                    <button onclick="openCheckout('GTA VI & Game Bundle', 5.44)" class="w-full bg-neonBlue text-cyberBlack text-xs font-bold py-2.5 rounded-xl hover:bg-cyan-400 transition">شراء الآن ⚡</button>
+            </section>
+
+            <!-- Quick Category Grid -->
+            <section class="grid grid-cols-4 md:grid-cols-8 gap-3 text-center">
+                <div class="bg-cyberDark border border-gray-800 p-3 rounded-xl hover:border-neonBlue transition cursor-pointer">
+                    <span class="text-2xl">🎮</span>
+                    <p class="text-[11px] font-semibold mt-1 text-gray-300">Steam</p>
                 </div>
-            </div>
-        </section>
+                <div class="bg-cyberDark border border-gray-800 p-3 rounded-xl hover:border-neonBlue transition cursor-pointer">
+                    <span class="text-2xl">🟩</span>
+                    <p class="text-[11px] font-semibold mt-1 text-gray-300">Xbox Live</p>
+                </div>
+                <div class="bg-cyberDark border border-gray-800 p-3 rounded-xl hover:border-neonBlue transition cursor-pointer">
+                    <span class="text-2xl">🕹️</span>
+                    <p class="text-[11px] font-semibold mt-1 text-gray-300">PSN</p>
+                </div>
+                <div class="bg-cyberDark border border-gray-800 p-3 rounded-xl hover:border-neonBlue transition cursor-pointer">
+                    <span class="text-2xl">💳</span>
+                    <p class="text-[11px] font-semibold mt-1 text-gray-300">Cash gift cards</p>
+                </div>
+                <div class="bg-cyberDark border border-gray-800 p-3 rounded-xl hover:border-neonBlue transition cursor-pointer">
+                    <span class="text-2xl">🎲</span>
+                    <p class="text-[11px] font-semibold mt-1 text-gray-300">Random keys</p>
+                </div>
+                <div class="bg-cyberDark border border-gray-800 p-3 rounded-xl hover:border-neonBlue transition cursor-pointer">
+                    <span class="text-2xl">🎵</span>
+                    <p class="text-[11px] font-semibold mt-1 text-gray-300">Music</p>
+                </div>
+                <div class="bg-cyberDark border border-gray-800 p-3 rounded-xl hover:border-neonBlue transition cursor-pointer">
+                    <span class="text-2xl">📺</span>
+                    <p class="text-[11px] font-semibold mt-1 text-gray-300">VOD</p>
+                </div>
+                <div class="bg-cyberDark border border-gray-800 p-3 rounded-xl hover:border-neonBlue transition cursor-pointer">
+                    <span class="text-2xl">🛡️</span>
+                    <p class="text-[11px] font-semibold mt-1 text-gray-300">VPN</p>
+                </div>
+            </section>
 
-        <!-- Categories Icons (G2A Style Grid) -->
-        <section class="grid grid-cols-4 gap-3 md:gap-4 text-center">
-            <div class="bg-cyberDark border border-gray-800 p-3 rounded-xl hover:border-neonBlue transition cursor-pointer">
-                <span class="text-2xl">🎮</span>
-                <p class="text-xs font-semibold mt-1 text-gray-300">ألعاب (Gaming)</p>
-            </div>
-            <div class="bg-cyberDark border border-gray-800 p-3 rounded-xl hover:border-neonBlue transition cursor-pointer">
-                <span class="text-2xl">💻</span>
-                <p class="text-xs font-semibold mt-1 text-gray-300">برمجيات (Software)</p>
-            </div>
-            <div class="bg-cyberDark border border-gray-800 p-3 rounded-xl hover:border-neonBlue transition cursor-pointer">
-                <span class="text-2xl">💳</span>
-                <p class="text-xs font-semibold mt-1 text-gray-300">بطاقات (Gift Cards)</p>
-            </div>
-            <div class="bg-cyberDark border border-gray-800 p-3 rounded-xl hover:border-neonBlue transition cursor-pointer">
-                <span class="text-2xl">🌐</span>
-                <p class="text-xs font-semibold mt-1 text-gray-300">عملات USDT</p>
-            </div>
-        </section>
-
-        <!-- Product Grid -->
-        <section class="space-y-4">
-            <div class="flex justify-between items-center border-b border-gray-800 pb-2">
-                <h2 id="cat-title" class="text-base md:text-xl font-bold text-neonBlue">🔥 الكروت والأكواد الأكثر طلباً</h2>
-                <span class="text-xs text-neonOrange">تسليم فوري ⚡</span>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                
-                <!-- Item 1 -->
-                <div class="bg-cyberDark border border-gray-800 rounded-2xl p-4 hover:border-neonBlue transition flex flex-col justify-between space-y-4">
-                    <div>
-                        <div class="h-32 bg-yellow-950/20 rounded-xl flex flex-col justify-center items-center border border-yellow-500/20">
+            <!-- Recommended Grid -->
+            <section class="space-y-3">
+                <h2 class="text-sm md:text-base font-bold text-neonBlue border-b border-gray-800 pb-2">Recommended for You</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div class="bg-cyberDark border border-gray-800 rounded-xl p-3 flex flex-col justify-between space-y-2">
+                        <div class="h-28 bg-yellow-950/30 rounded-lg flex flex-col justify-center items-center border border-yellow-500/20">
                             <span class="text-3xl">🪖</span>
-                            <span class="text-xs font-bold text-yellow-400 mt-1">PUBG Mobile</span>
+                            <span class="text-[10px] font-bold text-yellow-400 mt-1">PUBG Mobile</span>
                         </div>
-                        <h3 class="font-bold text-sm mt-3">660 UC شدات ببجي</h3>
-                        <p class="text-[11px] text-gray-400 mt-0.5">تسليم برقم الآيدي (ID).</p>
+                        <h3 class="font-bold text-xs text-white truncate">660 UC PUBG Mobile</h3>
+                        <div class="flex items-center justify-between pt-1">
+                            <span class="text-xs font-black text-neonOrange">$9.99</span>
+                            <button onclick="openCheckout('660 UC PUBG Mobile', 9.99)" class="bg-neonBlue text-cyberBlack text-[10px] font-bold px-2.5 py-1 rounded-lg">Buy</button>
+                        </div>
                     </div>
-                    <div class="flex items-center justify-between pt-2 border-t border-gray-800">
-                        <span class="text-base font-black text-neonOrange">$9.99</span>
-                        <button onclick="openCheckout('660 UC PUBG Mobile', 9.99)" class="bg-neonBlue text-cyberBlack text-xs font-bold px-3 py-2 rounded-xl hover:bg-cyan-400 transition btn-buy">شراء الآن</button>
-                    </div>
-                </div>
-
-                <!-- Item 2 -->
-                <div class="bg-cyberDark border border-gray-800 rounded-2xl p-4 hover:border-neonBlue transition flex flex-col justify-between space-y-4">
-                    <div>
-                        <div class="h-32 bg-blue-950/20 rounded-xl flex flex-col justify-center items-center border border-blue-500/20">
+                    <div class="bg-cyberDark border border-gray-800 rounded-xl p-3 flex flex-col justify-between space-y-2">
+                        <div class="h-28 bg-blue-950/30 rounded-lg flex flex-col justify-center items-center border border-blue-500/20">
                             <span class="text-3xl">🎮</span>
-                            <span class="text-xs font-bold text-blue-400 mt-1">Steam Wallet</span>
+                            <span class="text-[10px] font-bold text-blue-400 mt-1">Steam</span>
                         </div>
-                        <h3 class="font-bold text-sm mt-3">Steam Wallet $50</h3>
-                        <p class="text-[11px] text-gray-400 mt-0.5">كود رقمي أصلي عالمي.</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-2 border-t border-gray-800">
-                        <span class="text-base font-black text-neonOrange">$50.00</span>
-                        <button onclick="openCheckout('Steam Wallet $50', 50.00)" class="bg-neonBlue text-cyberBlack text-xs font-bold px-3 py-2 rounded-xl hover:bg-cyan-400 transition btn-buy">شراء الآن</button>
+                        <h3 class="font-bold text-xs text-white truncate">Steam Wallet $50</h3>
+                        <div class="flex items-center justify-between pt-1">
+                            <span class="text-xs font-black text-neonOrange">$50.00</span>
+                            <button onclick="openCheckout('Steam Wallet $50', 50.00)" class="bg-neonBlue text-cyberBlack text-[10px] font-bold px-2.5 py-1 rounded-lg">Buy</button>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Item 3 -->
-                <div class="bg-cyberDark border border-gray-800 rounded-2xl p-4 hover:border-neonBlue transition flex flex-col justify-between space-y-4">
-                    <div>
-                        <div class="h-32 bg-red-950/20 rounded-xl flex flex-col justify-center items-center border border-red-500/20">
-                            <span class="text-3xl">⚽</span>
-                            <span class="text-xs font-bold text-red-400 mt-1">eFootball PES</span>
-                        </div>
-                        <h3 class="font-bold text-sm mt-3">2130 eFootball Coins</h3>
-                        <p class="text-[11px] text-gray-400 mt-0.5">شحن مباشر متوافق.</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-2 border-t border-gray-800">
-                        <span class="text-base font-black text-neonOrange">$19.99</span>
-                        <button onclick="openCheckout('2130 eFootball Coins', 19.99)" class="bg-neonBlue text-cyberBlack text-xs font-bold px-3 py-2 rounded-xl hover:bg-cyan-400 transition btn-buy">شراء الآن</button>
-                    </div>
-                </div>
-
-                <!-- Item 4 -->
-                <div class="bg-cyberDark border border-gray-800 rounded-2xl p-4 hover:border-neonBlue transition flex flex-col justify-between space-y-4">
-                    <div>
-                        <div class="h-32 bg-indigo-950/20 rounded-xl flex flex-col justify-center items-center border border-indigo-500/20">
-                            <span class="text-3xl">🕹️</span>
-                            <span class="text-xs font-bold text-indigo-400 mt-1">PlayStation</span>
-                        </div>
-                        <h3 class="font-bold text-sm mt-3">PSN $25 Gift Card</h3>
-                        <p class="text-[11px] text-gray-400 mt-0.5">بطاقة أمريكي أصلية.</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-2 border-t border-gray-800">
-                        <span class="text-base font-black text-neonOrange">$25.00</span>
-                        <button onclick="openCheckout('PSN $25 Card', 25.00)" class="bg-neonBlue text-cyberBlack text-xs font-bold px-3 py-2 rounded-xl hover:bg-cyan-400 transition btn-buy">شراء الآن</button>
-                    </div>
-                </div>
-
+            </section>
+        </div>
+        <!-- View 2: PROFILE / SETTINGS -->
+        <div id="view-profile" class="hidden max-w-md mx-auto space-y-4">
+            <h1 class="text-xl font-bold text-center text-white mb-2">Gate2Adventure / JumaPay</h1>
+            <div class="bg-cyberDark border border-gray-800 rounded-2xl overflow-hidden divide-y divide-gray-800 text-xs">
+                <a href="#" onclick="switchView('currency')" class="flex items-center justify-between p-3.5 hover:bg-gray-800/40 transition">
+                    <div class="flex items-center gap-3"><span class="text-base">💳</span><span>Currency</span></div>
+                    <span class="text-gray-400"><span id="lbl-selected-currency">USD</span> ›</span>
+                </a>
+                <a href="#" onclick="switchView('language')" class="flex items-center justify-between p-3.5 hover:bg-gray-800/40 transition">
+                    <div class="flex items-center gap-3"><span class="text-base">🌐</span><span>Language</span></div>
+                    <span class="text-gray-400"><span id="lbl-selected-lang">English</span> ›</span>
+                </a>
+                <a href="#" onclick="switchView('country')" class="flex items-center justify-between p-3.5 hover:bg-gray-800/40 transition">
+                    <div class="flex items-center gap-3"><span class="text-base">📍</span><span>Country</span></div>
+                    <span class="text-gray-400"><span id="lbl-selected-country">Global</span> ›</span>
+                </a>
             </div>
-        </section>
+        </div>
 
+        <!-- View 3: CURRENCY -->
+        <div id="view-currency" class="hidden max-w-md mx-auto space-y-4">
+            <div class="flex items-center gap-3 mb-2">
+                <button onclick="switchView('profile')" class="text-gray-400 hover:text-white text-lg">‹ Back</button>
+                <h1 class="text-lg font-bold text-white">Currency</h1>
+            </div>
+            <div class="bg-cyberDark border border-gray-800 rounded-2xl overflow-hidden divide-y divide-gray-800 text-xs">
+                <div onclick="selectCurrency('USD', 'US Dollar')" class="p-3.5 hover:bg-gray-800/50 cursor-pointer">USD - US Dollar</div>
+                <div onclick="selectCurrency('EUR', 'Euro')" class="p-3.5 hover:bg-gray-800/50 cursor-pointer">EUR - Euro</div>
+                <div onclick="selectCurrency('EGP', 'Egyptian Pound')" class="p-3.5 hover:bg-gray-800/50 cursor-pointer">EGP - Egyptian Pound</div>
+                <div onclick="selectCurrency('USDT', 'USDT Crypto')" class="p-3.5 hover:bg-gray-800/50 cursor-pointer text-green-400 font-bold">USDT - Crypto (Anti-Sanction)</div>
+            </div>
+        </div>
+
+        <!-- View 4: LANGUAGE -->
+        <div id="view-language" class="hidden max-w-md mx-auto space-y-4">
+            <div class="flex items-center gap-3 mb-2">
+                <button onclick="switchView('profile')" class="text-gray-400 hover:text-white text-lg">‹ Back</button>
+                <h1 class="text-lg font-bold text-white">Language</h1>
+            </div>
+            <div class="bg-cyberDark border border-gray-800 rounded-2xl overflow-hidden divide-y divide-gray-800 text-xs">
+                <div onclick="selectLanguage('English')" class="p-3.5 hover:bg-gray-800/50 cursor-pointer">🇬🇧 English</div>
+                <div onclick="selectLanguage('العربية (Arabic)')" class="p-3.5 hover:bg-gray-800/50 cursor-pointer">🇸🇦 العربية (Arabic)</div>
+                <div onclick="selectLanguage('Русский (Russian)')" class="p-3.5 hover:bg-gray-800/50 cursor-pointer">🇷🇺 Русский (Russian)</div>
+                <div onclick="selectLanguage('Türkçe (Turkish)')" class="p-3.5 hover:bg-gray-800/50 cursor-pointer">🇹🇷 Türkçe (Turkish)</div>
+            </div>
+        </div>
+
+        <!-- View 5: COUNTRY -->
+        <div id="view-country" class="hidden max-w-md mx-auto space-y-4">
+            <div class="flex items-center gap-3 mb-2">
+                <button onclick="switchView('profile')" class="text-gray-400 hover:text-white text-lg">‹ Back</button>
+                <h1 class="text-lg font-bold text-white">Country</h1>
+            </div>
+            <div class="bg-cyberDark border border-gray-800 rounded-2xl overflow-hidden divide-y divide-gray-800 text-xs">
+                <div onclick="selectCountry('Global')" class="p-3.5 hover:bg-gray-800/50 cursor-pointer">🌐 Global</div>
+                <div onclick="selectCountry('Egypt')" class="p-3.5 hover:bg-gray-800/50 cursor-pointer">🇪🇬 Egypt</div>
+                <div onclick="selectCountry('Syria')" class="p-3.5 hover:bg-gray-800/50 cursor-pointer">🇸🇾 Syria</div>
+            </div>
+        </div>
     </main>
-
-    <!-- Mobile Bottom Navigation Bar (G2A App Style) -->
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-cyberDark border-t border-gray-800 h-16 flex items-center justify-around px-2 z-50">
-        <a href="#" class="flex flex-col items-center text-neonBlue">
-            <span class="text-lg">🏠</span>
-            <span class="text-[10px] mt-0.5">الرئيسية</span>
+    <!-- Bottom Navigation Bar -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-cyberDark/95 border-t border-gray-800 h-16 flex items-center justify-around px-2 z-50 backdrop-blur-md">
+        <a href="#" onclick="switchView('home')" id="nav-home" class="flex flex-col items-center text-neonBlue">
+            <span class="text-xl">🏠</span>
+            <span class="text-[10px] mt-0.5 font-bold">Home</span>
         </a>
-        <a href="#" onclick="openTopUpModal()" class="flex flex-col items-center text-gray-400 hover:text-neonBlue">
-            <span class="text-lg">💼</span>
-            <span class="text-[10px] mt-0.5">المحفظة</span>
+        <a href="#" onclick="switchView('home')" class="flex flex-col items-center text-gray-400 hover:text-neonBlue">
+            <span class="text-xl">🔍</span>
+            <span class="text-[10px] mt-0.5">Search</span>
         </a>
-        <a href="#" onclick="toggleAdminModal()" class="flex flex-col items-center text-gray-400 hover:text-neonBlue">
-            <span class="text-lg">⚙️</span>
-            <span class="text-[10px] mt-0.5">الأدمن</span>
+        <a href="#" onclick="openCheckout('Cart Item', 10.00)" class="flex flex-col items-center text-gray-400 hover:text-neonBlue">
+            <span class="text-xl">🛒</span>
+            <span class="text-[10px] mt-0.5">Cart</span>
+        </a>
+        <a href="#" onclick="switchView('profile')" id="nav-profile" class="flex flex-col items-center text-gray-400 hover:text-neonBlue">
+            <span class="text-xl">👤</span>
+            <span class="text-[10px] mt-0.5 font-bold">Profile</span>
         </a>
     </nav>
-    <!-- Modal: Checkout & Direct Payment -->
+
+    <!-- Modals & Scripts -->
     <div id="checkoutModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-        <div class="bg-cyberDark border border-neonBlue/50 w-full max-w-md rounded-2xl p-5 space-y-4 relative shadow-neon-blue">
-            <button onclick="closeCheckoutModal()" class="absolute top-4 left-4 text-gray-400 hover:text-white text-lg">✕</button>
-            
-            <div>
-                <span id="checkoutItemTitle" class="text-xs text-neonBlue font-semibold">تفاصيل الطلب</span>
-                <h3 id="checkoutItemPrice" class="text-xl font-bold text-white mt-1">السعر: $0.00</h3>
-            </div>
-
-            <div class="space-y-2 pt-2 text-xs">
-                <p class="text-gray-400 mb-2">اختر طريقة الدفع المناسبة لظروف بلدك:</p>
-                
-                <!-- 1. Wallet -->
-                <button onclick="processDirectCheckout('المحفظة الداخلية')" class="w-full flex items-center justify-between border border-neonOrange/40 bg-neonOrange/10 hover:bg-neonOrange/20 p-3 rounded-xl transition">
-                    <span class="font-bold text-neonOrange">💼 الدفع من رصيد المحفظة المتاح</span>
-                    <span id="walletOptionBalance" class="text-xs text-neonOrange">($0.00)</span>
-                </button>
-
-                <!-- 2. USDT Crypto (Anti-Sanctions) -->
-                <button onclick="processDirectCheckout('USDT Crypto (بدون حظر)')" class="w-full flex items-center justify-between border border-green-500/40 bg-green-950/30 hover:bg-green-900/40 p-3 rounded-xl transition">
-                    <span class="font-bold text-green-400">🌐 عملات رقمية USDT (بدون حظر وبدون رسوم)</span>
-                    <span class="text-xs text-green-400">آمن ⚡</span>
-                </button>
-
-                <!-- 3. Local P2P Agents -->
-                <button onclick="processDirectCheckout('الوكيل المحلي (P2P)')" class="w-full flex items-center justify-between border border-neonOrange/40 bg-orange-950/30 hover:bg-orange-900/40 p-3 rounded-xl transition">
-                    <span class="font-bold text-neonOrange">🎟️ شبكة الوكلاء المحليين (للدول المحظورة بنكياً)</span>
-                    <span class="text-xs text-neonOrange">كاش / محفظة محلية ⚡</span>
-                </button>
-
-                <!-- 4. Global Cards / PayPal -->
-                <button onclick="processDirectCheckout('Visa / PayPal')" class="w-full flex items-center justify-between border border-blue-500/40 bg-blue-950/30 hover:bg-blue-900/40 p-3 rounded-xl transition">
-                    <span class="font-bold text-blue-400">💳 فيزا / ماستركارد / PayPal (عالمي)</span>
-                    <span class="text-xs text-neonBlue">فوري ⚡</span>
-                </button>
-            </div>
+        <div class="bg-cyberDark border border-neonBlue/50 w-full max-w-md rounded-2xl p-5 space-y-4 relative">
+            <button onclick="closeModal('checkoutModal')" class="absolute top-4 left-4 text-gray-400">✕</button>
+            <h3 id="checkoutItemTitle" class="text-lg font-bold text-white">Order Details</h3>
+            <p id="checkoutItemPrice" class="text-neonOrange font-black">$0.00</p>
+            <button onclick="finalizePurchase()" class="w-full bg-neonBlue text-cyberBlack font-bold py-2 rounded-xl">Confirm & Pay (USDT / Wallet)</button>
         </div>
     </div>
 
-    <!-- Modal 1: Wallet Top-Up -->
-    <div id="topUpModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-        <div class="bg-cyberDark border border-neonOrange/50 w-full max-w-md rounded-2xl p-5 space-y-4 relative shadow-neon-orange">
-            <button onclick="closeTopUpModal()" class="absolute top-4 left-4 text-gray-400 hover:text-white text-lg">✕</button>
-            
-            <div>
-                <span class="text-xs text-neonOrange font-semibold">💳 شحن الرصيد الداخلي</span>
-                <h3 class="text-lg font-bold text-white mt-1">اختر طريقة شحن المحفظة:</h3>
-            </div>
-
-            <div class="space-y-3">
-                <div>
-                    <label class="text-xs text-gray-400 block mb-1">المبلغ المطلوب ($USD):</label>
-                    <input type="number" id="topUpAmount" value="50" class="w-full bg-cyberBlack border border-gray-700 text-neonOrange px-3 py-2 rounded-xl text-sm focus:outline-none font-bold">
-                </div>
-
-                <div class="space-y-2 pt-2 text-xs">
-                    <button onclick="processTopUp('USDT Crypto')" class="w-full flex items-center justify-between border border-green-500/40 bg-green-950/30 hover:bg-green-900/40 p-3 rounded-xl transition">
-                        <span class="font-bold text-green-400">🌐 USDT (TRC20 / Binance Pay)</span>
-                        <span class="text-xs text-green-400">بدون رسوم ⚡</span>
-                    </button>
-
-                    <button onclick="showAgentInfo()" class="w-full flex items-center justify-between border border-neonOrange/40 bg-neonOrange/10 hover:bg-neonOrange/20 p-3 rounded-xl transition">
-                        <span class="font-bold text-neonOrange">🎟️ الوكيل المحلي المعتمد (P2P)</span>
-                        <span class="text-xs text-neonOrange">السعر الرسمي ⚡</span>
-                    </button>
-                </div>
-
-                <div id="agentInfoBox" class="hidden bg-cyberBlack p-3.5 rounded-xl border border-neonOrange/30 space-y-2 text-xs">
-                    <p class="text-gray-300">تواصل مع وكيلنا في بلدك للحصول على كود الشحن بدون قيود:</p>
-                    <div class="bg-cyberDark p-2 rounded border border-gray-700 text-neonOrange font-mono">
-                        Telegram: @JumaPay_Global_Bot
-                    </div>
-                    <input type="text" id="voucherInput" placeholder="أدخل كود الشحن (JUMA-XXXX)" class="w-full bg-cyberDark border border-gray-700 text-neonOrange px-3 py-2 rounded-lg focus:outline-none">
-                    <button onclick="processTopUp('الوكيل المحلي (Voucher)')" class="w-full bg-neonOrange text-cyberBlack font-bold py-2 rounded-lg hover:bg-orange-600 transition">تفعيل الكود</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal 2: Delivery Screen -->
-    <div id="deliveryModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-        <div class="bg-cyberDark border border-neonBlue/50 w-full max-w-md rounded-2xl p-6 text-center space-y-4 relative shadow-neon-blue">
-            <button onclick="closeDeliveryModal()" class="absolute top-4 left-4 text-gray-400 hover:text-white text-lg">✕</button>
-            <span class="text-4xl">🎉</span>
-            <h3 class="text-xl font-bold text-neonBlue">تم الشراء بنجاح وتسليم الكود!</h3>
-            <p class="text-xs text-gray-400">الكود الرقمي الخاص بك:</p>
-            <div id="deliveredCode" class="bg-cyberBlack p-3 rounded-xl border border-neonBlue/50 text-neonBlue font-mono font-bold text-base tracking-widest select-all">
-                JUMA-9988-X772-PASS
-            </div>
-            <button onclick="closeDeliveryModal()" class="w-full bg-neonBlue text-cyberBlack font-bold py-2 rounded-xl text-xs hover:bg-cyan-400 transition">حفظ ومتابعة</button>
-        </div>
-    </div>
-
-    <!-- Modal 3: Admin Panel -->
-    <div id="adminModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-        <div class="bg-cyberDark border border-neonOrange/40 w-full max-w-lg rounded-2xl p-6 space-y-4 relative">
-            <button onclick="toggleAdminModal()" class="absolute top-4 left-4 text-gray-400 hover:text-white">✕</button>
-            <h2 class="text-lg font-bold text-neonOrange">⚙️ لوحة تحكم الأدمن (JumaPay Admin)</h2>
-            <div class="space-y-3 text-xs">
-                <input type="text" placeholder="اسم الكارت أو اللعبة" class="w-full bg-cyberBlack border border-gray-700 px-3 py-2 rounded-lg text-white">
-                <input type="number" placeholder="السعر الرسمي بالدولار ($USD)" class="w-full bg-cyberBlack border border-gray-700 px-3 py-2 rounded-lg text-white">
-                <textarea placeholder="الأكواد الرقمية المتاحة (كود في كل سطر)" class="w-full bg-cyberBlack border border-gray-700 px-3 py-2 rounded-lg text-white h-20 font-mono"></textarea>
-                <button onclick="alert('تم تحديث المخزون والأسعار الرسمية بنجاح!')" class="w-full bg-neonOrange text-cyberBlack font-bold py-2 rounded-lg hover:bg-orange-600 transition">حفظ في قاعدة البيانات</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="border-t border-gray-900 bg-cyberDark py-6 text-center text-xs text-gray-500 mb-12 md:mb-0">
-        &copy; 2026 JumaPay Global. G2A Style & Anti-Sanctions Store.
-    </footer>
-
-    <!-- JS Logic & Multi-Language Engine -->
     <script>
-        let currentBalance = 0.00;
-        let selectedProduct = { title: '', price: 0 };
+        function switchView(viewName) {
+            document.getElementById('view-home').classList.add('hidden');
+            document.getElementById('view-profile').classList.add('hidden');
+            document.getElementById('view-currency').classList.add('hidden');
+            document.getElementById('view-language').classList.add('hidden');
+            document.getElementById('view-country').classList.add('hidden');
 
-        const translations = {
-            ar: { catTitle: "🔥 الكروت والأكواد الأكثر طلباً", buyBtn: "شراء الآن" },
-            en: { catTitle: "🔥 Best Selling Digital Cards", buyBtn: "Buy Now" },
-            ru: { catTitle: "🔥 Популярные цифровые карты", buyBtn: "Купить" },
-            fr: { catTitle: "🔥 Cartes numériques les plus demandées", buyBtn: "Acheter" },
-            es: { catTitle: "🔥 Tarjetas digitales más vendidas", buyBtn: "Comprar" },
-            tr: { catTitle: "🔥 En Çok Satan Dijital Kartlar", buyBtn: "Satın Al" }
-        };
+            document.getElementById('nav-home').classList.remove('text-neonBlue');
+            document.getElementById('nav-profile').classList.remove('text-neonBlue');
+            document.getElementById('nav-home').classList.add('text-gray-400');
+            document.getElementById('nav-profile').classList.add('text-gray-400');
 
-        function switchLanguage(lang) {
-            const html = document.documentElement;
-            html.dir = (lang === 'ar') ? 'rtl' : 'ltr';
-            html.lang = lang;
-
-            const t = translations[lang];
-            if(t) {
-                document.getElementById('cat-title').innerText = t.catTitle;
-                document.querySelectorAll('.btn-buy').forEach(btn => {
-                    btn.innerText = t.buyBtn;
-                });
+            if(viewName === 'home') {
+                document.getElementById('view-home').classList.remove('hidden');
+                document.getElementById('nav-home').classList.add('text-neonBlue');
+            } else if(viewName === 'profile') {
+                document.getElementById('view-profile').classList.remove('hidden');
+                document.getElementById('nav-profile').classList.add('text-neonBlue');
+            } else if(viewName === 'currency') {
+                document.getElementById('view-currency').classList.remove('hidden');
+            } else if(viewName === 'language') {
+                document.getElementById('view-language').classList.remove('hidden');
+            } else if(viewName === 'country') {
+                document.getElementById('view-country').classList.remove('hidden');
             }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function updateBalanceDisplay() {
-            document.getElementById('userBalance').innerText = `$${currentBalance.toFixed(2)}`;
-            document.getElementById('walletOptionBalance').innerText = `($${currentBalance.toFixed(2)})`;
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+        
+        function selectCurrency(code, name) {
+            document.getElementById('lbl-selected-currency').innerText = code;
+            switchView('profile');
         }
-
-        function openTopUpModal() {
-            document.getElementById('topUpModal').classList.remove('hidden');
+        function selectLanguage(lang) {
+            document.getElementById('lbl-selected-lang').innerText = lang;
+            switchView('profile');
         }
-
-        function closeTopUpModal() {
-            document.getElementById('topUpModal').classList.add('hidden');
+        function selectCountry(country) {
+            document.getElementById('lbl-selected-country').innerText = country;
+            switchView('profile');
         }
-
-        function showAgentInfo() {
-            document.getElementById('agentInfoBox').classList.toggle('hidden');
-        }
-
         function openCheckout(title, price) {
-            selectedProduct = { title, price };
-            document.getElementById('checkoutItemTitle').innerText = `شراء: ${title}`;
-            document.getElementById('checkoutItemPrice').innerText = `المبلغ المطلوب: $${price.toFixed(2)}`;
-            updateBalanceDisplay();
-            document.getElementById('checkoutModal').classList.remove('hidden');
+            document.getElementById('checkoutItemTitle').innerText = title;
+            document.getElementById('checkoutItemPrice').innerText = `$${price}`;
+            openModal('checkoutModal');
         }
-
-        function closeCheckoutModal() {
-            document.getElementById('checkoutModal').classList.add('hidden');
-        }
-
-        function processDirectCheckout(paymentMethod) {
-            if (paymentMethod === 'المحفظة الداخلية') {
-                if (currentBalance >= selectedProduct.price) {
-                    currentBalance -= selectedProduct.price;
-                    updateBalanceDisplay();
-                    finalizePurchase();
-                } else {
-                    alert(`عفواً! رصيدك غير كافٍ. اختر طريقة دفع بديلة (USDT أو الوكيل المحلي).`);
-                }
-            } else {
-                finalizePurchase();
-                alert(`تم تأكيد الطلب بنجاح عبر [${paymentMethod}] لـ ${selectedProduct.title}!`);
-            }
-        }
-
         function finalizePurchase() {
-            closeCheckoutModal();
-            const randomCode = 'JUMA-' + Math.floor(1000 + Math.random() * 9000) + '-PASS';
-            document.getElementById('deliveredCode').innerText = randomCode;
-            document.getElementById('deliveryModal').classList.remove('hidden');
-        }
-
-        function processTopUp(method) {
-            const amount = parseFloat(document.getElementById('topUpAmount').value) || 0;
-            if(amount > 0) {
-                currentBalance += amount;
-                updateBalanceDisplay();
-                alert(`تم شحن المحفظة بنجاح بـ $${amount.toFixed(2)} عبر [${method}]!`);
-                closeTopUpModal();
-            } else {
-                alert("يرجى إدخال مبلغ صحيح.");
-            }
-        }
-
-        function closeDeliveryModal() {
-            document.getElementById('deliveryModal').classList.add('hidden');
-        }
-
-        function toggleAdminModal() {
-            document.getElementById('adminModal').classList.toggle('hidden');
+            closeModal('checkoutModal');
+            alert("تم الشراء بنجاح وتوصيل الكود!");
         }
     </script>
 </body>
