@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JumaPay | Global Digital Store & Fair Pricing</title>
+    <title>JumaPay | Global Digital Store & Anti-Sanctions Fair Pricing</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -42,21 +42,25 @@
                 
                 <!-- Internal Wallet Balance Box -->
                 <div class="flex items-center bg-cyberBlack border border-neonOrange/40 rounded-xl px-3 py-1.5 gap-2 shadow-neon-orange">
-                    <span class="text-xs text-gray-400">💼 المحفظة:</span>
+                    <span class="text-xs text-gray-400">💼 <span id="lbl-wallet">المحفظة</span>:</span>
                     <span id="userBalance" class="text-sm font-black text-neonOrange">$0.00</span>
-                    <button onclick="openTopUpModal()" class="bg-neonOrange text-cyberBlack text-[10px] font-bold px-2 py-0.5 rounded hover:bg-orange-600 transition">+ شحن رصيد</button>
+                    <button onclick="openTopUpModal()" class="bg-neonOrange text-cyberBlack text-[10px] font-bold px-2 py-0.5 rounded hover:bg-orange-600 transition">+ <span id="lbl-topup">شحن</span></button>
                 </div>
 
                 <!-- Admin Button -->
                 <button onclick="toggleAdminModal()" class="text-xs bg-cyberBlack text-gray-300 border border-gray-700 px-2.5 py-1.5 rounded-xl hover:border-neonBlue hover:text-neonBlue transition">
-                    ⚙️ <span class="hidden sm:inline">الأدمن</span>
+                    ⚙️ <span class="hidden sm:inline" id="lbl-admin">الأدمن</span>
                 </button>
 
-                <!-- Language Switcher -->
+                <!-- Global Multi-Language Switcher -->
                 <div class="relative">
                     <select id="langSelect" onchange="switchLanguage(this.value)" class="bg-cyberBlack text-neonBlue border border-neonBlue/40 rounded-xl px-2 sm:px-3 py-1.5 text-xs sm:text-sm focus:outline-none shadow-neon-blue cursor-pointer">
-                        <option value="ar">العربية (AR)</option>
-                        <option value="en">English (EN)</option>
+                        <option value="ar">🇸🇦 العربية</option>
+                        <option value="en">🇬🇧 English</option>
+                        <option value="ru">🇷🇺 Русский</option>
+                        <option value="fr">🇫🇷 Français</option>
+                        <option value="es">🇪🇸 Español</option>
+                        <option value="tr">🇹🇷 Türkçe</option>
                     </select>
                 </div>
             </div>
@@ -69,13 +73,13 @@
         <!-- Hero Banner -->
         <section class="text-center space-y-3 py-4">
             <span class="px-3 py-1 rounded-full text-xs font-semibold bg-neonOrange/10 text-neonOrange border border-neonOrange/30 shadow-neon-orange inline-block">
-                🛡️ أسعار رسمية عادلة 100% بدون أي استغلال أو رسوم خفية
+                🌐 <span id="hero-badge">منصة عالمية كاسرة للحظر البنكي ورسوم الحروب والاستغلال</span>
             </span>
             <h1 id="hero-title" class="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">
                 اشتري بطاقات الألعاب بسعرها الحقيقي وتسليم فوري
             </h1>
-            <p id="hero-subtitle" class="text-xs sm:text-sm text-gray-400 max-w-xl mx-auto">
-                وداعاً للتجار المستغلين والأسعار الفلكية. شحن محفظتك متاح عالمياً بالبوابات أو عبر وكلائنا الرسميين وشبكة الـ USDT.
+            <p id="hero-subtitle" class="text-xs sm:text-sm text-gray-400 max-w-2xl mx-auto">
+                سواء كنت في دولة محظورة أو تعاني من استغلال البنوك والأسعار الفلكية، اشترِ مباشرة عبر شبكة USDT اللامركزية، وكلاء P2P المحليين، أو ببطاقتك وباي بال بالسعر الرسمي العادل.
             </p>
         </section>
 
@@ -83,7 +87,7 @@
         <section class="space-y-6">
             <div class="flex justify-between items-center border-b border-gray-800 pb-3">
                 <h2 id="cat-title" class="text-lg sm:text-xl font-bold text-neonBlue">🔥 الكروت والأكواد بأسعار رسمية</h2>
-                <span class="text-xs text-neonOrange">تسليم آلي فوري من المحفظة ⚡</span>
+                <span class="text-xs text-neonOrange">دفع مباشر أو عبر المحفظة ⚡</span>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -100,7 +104,7 @@
                     </div>
                     <div class="flex items-center justify-between pt-2 border-t border-gray-800">
                         <span class="text-lg font-black text-neonOrange">$9.99 <span class="text-xs text-gray-400">USD</span></span>
-                        <button onclick="buyProduct('660 UC PUBG Mobile', 9.99)" class="bg-neonBlue text-cyberBlack text-xs font-bold px-3 py-2 rounded-xl hover:bg-cyan-400 transition">شراء بالمحفظة</button>
+                        <button onclick="openCheckout('660 UC PUBG Mobile', 9.99)" class="bg-neonBlue text-cyberBlack text-xs font-bold px-3 py-2 rounded-xl hover:bg-cyan-400 transition btn-buy">شراء الآن 🛒</button>
                     </div>
                 </div>
 
@@ -116,7 +120,7 @@
                     </div>
                     <div class="flex items-center justify-between pt-2 border-t border-gray-800">
                         <span class="text-lg font-black text-neonOrange">$50.00 <span class="text-xs text-gray-400">USD</span></span>
-                        <button onclick="buyProduct('Steam Wallet $50', 50.00)" class="bg-neonBlue text-cyberBlack text-xs font-bold px-3 py-2 rounded-xl hover:bg-cyan-400 transition">شراء بالمحفظة</button>
+                        <button onclick="openCheckout('Steam Wallet $50', 50.00)" class="bg-neonBlue text-cyberBlack text-xs font-bold px-3 py-2 rounded-xl hover:bg-cyan-400 transition btn-buy">شراء الآن 🛒</button>
                     </div>
                 </div>
 
@@ -132,7 +136,7 @@
                     </div>
                     <div class="flex items-center justify-between pt-2 border-t border-gray-800">
                         <span class="text-lg font-black text-neonOrange">$19.99 <span class="text-xs text-gray-400">USD</span></span>
-                        <button onclick="buyProduct('2130 eFootball Coins', 19.99)" class="bg-neonBlue text-cyberBlack text-xs font-bold px-3 py-2 rounded-xl hover:bg-cyan-400 transition">شراء بالمحفظة</button>
+                        <button onclick="openCheckout('2130 eFootball Coins', 19.99)" class="bg-neonBlue text-cyberBlack text-xs font-bold px-3 py-2 rounded-xl hover:bg-cyan-400 transition btn-buy">شراء الآن 🛒</button>
                     </div>
                 </div>
 
@@ -148,7 +152,7 @@
                     </div>
                     <div class="flex items-center justify-between pt-2 border-t border-gray-800">
                         <span class="text-lg font-black text-neonOrange">$25.00 <span class="text-xs text-gray-400">USD</span></span>
-                        <button onclick="buyProduct('PSN $25 Card', 25.00)" class="bg-neonBlue text-cyberBlack text-xs font-bold px-3 py-2 rounded-xl hover:bg-cyan-400 transition">شراء بالمحفظة</button>
+                        <button onclick="openCheckout('PSN $25 Card', 25.00)" class="bg-neonBlue text-cyberBlack text-xs font-bold px-3 py-2 rounded-xl hover:bg-cyan-400 transition btn-buy">شراء الآن 🛒</button>
                     </div>
                 </div>
 
@@ -156,51 +160,81 @@
         </section>
 
     </main>
+    <!-- Modal: Checkout & Direct Payment -->
+    <div id="checkoutModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-cyberDark border border-neonBlue/50 w-full max-w-md rounded-2xl p-5 space-y-4 relative shadow-neon-blue">
+            <button onclick="closeCheckoutModal()" class="absolute top-4 left-4 text-gray-400 hover:text-white text-lg">✕</button>
+            
+            <div>
+                <span id="checkoutItemTitle" class="text-xs text-neonBlue font-semibold">تفاصيل الطلب</span>
+                <h3 id="checkoutItemPrice" class="text-xl font-bold text-white mt-1">السعر: $0.00</h3>
+            </div>
 
-    <!-- Modal 1: Wallet Top-Up (شحن المحفظة بطرق عادلة وسهلة) -->
+            <div class="space-y-2 pt-2 text-xs">
+                <p id="txt-choose-method" class="text-gray-400 mb-2">اختر طريقة الدفع المناسبة لظروف بلدك:</p>
+                
+                <!-- 1. Wallet -->
+                <button onclick="processDirectCheckout('المحفظة الداخلية')" class="w-full flex items-center justify-between border border-neonOrange/40 bg-neonOrange/10 hover:bg-neonOrange/20 p-3 rounded-xl transition">
+                    <span id="opt-wallet" class="font-bold text-neonOrange">💼 الدفع من رصيد المحفظة المتاح</span>
+                    <span id="walletOptionBalance" class="text-xs text-neonOrange">($0.00)</span>
+                </button>
+
+                <!-- 2. USDT Crypto (Anti-Sanctions) -->
+                <button onclick="processDirectCheckout('USDT Crypto (بدون حظر)')" class="w-full flex items-center justify-between border border-green-500/40 bg-green-950/30 hover:bg-green-900/40 p-3 rounded-xl transition">
+                    <span id="opt-usdt" class="font-bold text-green-400">🌐 عملات رقمية USDT (بدون حظر وبدون عمولة)</span>
+                    <span class="text-xs text-green-400">آمن ⚡</span>
+                </button>
+
+                <!-- 3. Local P2P Agents -->
+                <button onclick="processDirectCheckout('الوكيل المحلي (P2P)')" class="w-full flex items-center justify-between border border-neonOrange/40 bg-orange-950/30 hover:bg-orange-900/40 p-3 rounded-xl transition">
+                    <span id="opt-agent" class="font-bold text-neonOrange">🎟️ شبكة الوكلاء المحليين (للدول المحظورة بنكياً)</span>
+                    <span class="text-xs text-neonOrange">كاش / محفظة محلية ⚡</span>
+                </button>
+
+                <!-- 4. Global Cards / PayPal -->
+                <button onclick="processDirectCheckout('Visa / PayPal')" class="w-full flex items-center justify-between border border-blue-500/40 bg-blue-950/30 hover:bg-blue-900/40 p-3 rounded-xl transition">
+                    <span id="opt-visa" class="font-bold text-blue-400">💳 فيزا / ماستركارد / PayPal (عالمي)</span>
+                    <span class="text-xs text-neonBlue">فوري ⚡</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 1: Wallet Top-Up -->
     <div id="topUpModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
         <div class="bg-cyberDark border border-neonOrange/50 w-full max-w-md rounded-2xl p-5 space-y-4 relative shadow-neon-orange">
             <button onclick="closeTopUpModal()" class="absolute top-4 left-4 text-gray-400 hover:text-white text-lg">✕</button>
             
             <div>
-                <span class="text-xs text-neonOrange font-semibold">💳 شحن الرصيد الداخلي بسعر عادل</span>
-                <h3 class="text-lg font-bold text-white mt-1">اختر طريقة الشحن المناسبة لك:</h3>
+                <span id="topup-header-span" class="text-xs text-neonOrange font-semibold">💳 شحن الرصيد الداخلي</span>
+                <h3 id="topup-header-title" class="text-lg font-bold text-white mt-1">اختر طريقة شحن المحفظة:</h3>
             </div>
 
             <div class="space-y-3">
                 <div>
-                    <label class="text-xs text-gray-400 block mb-1">المبلغ المطلوب ($USD):</label>
+                    <label id="lbl-amount" class="text-xs text-gray-400 block mb-1">المبلغ المطلوب ($USD):</label>
                     <input type="number" id="topUpAmount" value="50" class="w-full bg-cyberBlack border border-gray-700 text-neonOrange px-3 py-2 rounded-xl text-sm focus:outline-none font-bold">
                 </div>
 
-                <div class="space-y-2 pt-2">
-                    <!-- Global Visa / PayPal -->
-                    <button onclick="processTopUp('PayPal / Visa')" class="w-full flex items-center justify-between border border-blue-500/40 bg-blue-950/30 hover:bg-blue-900/40 p-3 rounded-xl transition text-xs">
-                        <span class="font-bold text-blue-400">💳 فيزا / ماستركارد / PayPal (عالمي)</span>
-                        <span class="text-xs text-neonBlue">تلقائي ⚡</span>
-                    </button>
-
-                    <!-- Crypto USDT (No restrictions, no fees) -->
-                    <button onclick="processTopUp('USDT Crypto')" class="w-full flex items-center justify-between border border-green-500/40 bg-green-950/30 hover:bg-green-900/40 p-3 rounded-xl transition text-xs">
-                        <span class="font-bold text-green-400">🌐 عملات رقمية USDT (بدون حظر وبدون عمولة)</span>
+                <div class="space-y-2 pt-2 text-xs">
+                    <button onclick="processTopUp('USDT Crypto')" class="w-full flex items-center justify-between border border-green-500/40 bg-green-950/30 hover:bg-green-900/40 p-3 rounded-xl transition">
+                        <span class="font-bold text-green-400">🌐 USDT (TRC20 / Binance Pay)</span>
                         <span class="text-xs text-green-400">بدون رسوم ⚡</span>
                     </button>
 
-                    <!-- Official Local Agent / Voucher -->
-                    <button onclick="showAgentInfo()" class="w-full flex items-center justify-between border border-neonOrange/40 bg-neonOrange/10 hover:bg-neonOrange/20 p-3 rounded-xl transition text-xs">
-                        <span class="font-bold text-neonOrange">🎟️ الوكيل الرسمي المحلي (لكل الدول المحظورة)</span>
-                        <span class="text-xs text-neonOrange">بسعر عادل ⚡</span>
+                    <button onclick="showAgentInfo()" class="w-full flex items-center justify-between border border-neonOrange/40 bg-neonOrange/10 hover:bg-neonOrange/20 p-3 rounded-xl transition">
+                        <span class="font-bold text-neonOrange">🎟️ الوكيل المحلي المعتمد (P2P)</span>
+                        <span class="text-xs text-neonOrange">السعر الرسمي ⚡</span>
                     </button>
                 </div>
 
-                <!-- Agent / Voucher Info Box -->
                 <div id="agentInfoBox" class="hidden bg-cyberBlack p-3.5 rounded-xl border border-neonOrange/30 space-y-2 text-xs">
-                    <p class="text-gray-300">تواصل مع وكيلنا المعتمد للحصول على كود الشحن بسعر الدولار الرسمي من غير استغلال:</p>
+                    <p id="agent-help-text" class="text-gray-300">تواصل مع وكيلنا في بلدك للحصول على كود الشحن بدون قيود:</p>
                     <div class="bg-cyberDark p-2 rounded border border-gray-700 text-neonOrange font-mono">
-                        Telegram: @JumaPay_Agent_Bot
+                        Telegram: @JumaPay_Global_Bot
                     </div>
-                    <input type="text" id="voucherInput" placeholder="أدخل كود الشحن هنا (JUMA-XXXX)" class="w-full bg-cyberDark border border-gray-700 text-neonOrange px-3 py-2 rounded-lg focus:outline-none">
-                    <button onclick="processTopUp('الوكيل المحلي (Voucher)')" class="w-full bg-neonOrange text-cyberBlack font-bold py-2 rounded-lg hover:bg-orange-600 transition">تفعيل الكود وإضافة الرصيد</button>
+                    <input type="text" id="voucherInput" placeholder="أدخل كود الشحن (JUMA-XXXX)" class="w-full bg-cyberDark border border-gray-700 text-neonOrange px-3 py-2 rounded-lg focus:outline-none">
+                    <button onclick="processTopUp('الوكيل المحلي (Voucher)')" class="w-full bg-neonOrange text-cyberBlack font-bold py-2 rounded-lg hover:bg-orange-600 transition">تفعيل الكود</button>
                 </div>
             </div>
         </div>
@@ -211,12 +245,12 @@
         <div class="bg-cyberDark border border-neonBlue/50 w-full max-w-md rounded-2xl p-6 text-center space-y-4 relative shadow-neon-blue">
             <button onclick="closeDeliveryModal()" class="absolute top-4 left-4 text-gray-400 hover:text-white text-lg">✕</button>
             <span class="text-4xl">🎉</span>
-            <h3 class="text-xl font-bold text-neonBlue">تم الشراء بسعر عادل وتسليم الكود!</h3>
-            <p class="text-xs text-gray-400">الكود الرقمي الخاص بك:</p>
+            <h3 id="delivery-success-title" class="text-xl font-bold text-neonBlue">تم الشراء بنجاح وتسليم الكود!</h3>
+            <p id="delivery-code-label" class="text-xs text-gray-400">الكود الرقمي الخاص بك:</p>
             <div id="deliveredCode" class="bg-cyberBlack p-3 rounded-xl border border-neonBlue/50 text-neonBlue font-mono font-bold text-base tracking-widest select-all">
                 JUMA-9988-X772-PASS
             </div>
-            <button onclick="closeDeliveryModal()" class="w-full bg-neonBlue text-cyberBlack font-bold py-2 rounded-xl text-xs hover:bg-cyan-400 transition">حفظ ومتابعة</button>
+            <button onclick="closeDeliveryModal()" id="btn-save-close" class="w-full bg-neonBlue text-cyberBlack font-bold py-2 rounded-xl text-xs hover:bg-cyan-400 transition">حفظ ومتابعة</button>
         </div>
     </div>
 
@@ -236,40 +270,90 @@
 
     <!-- Footer -->
     <footer class="border-t border-gray-900 bg-cyberDark py-4 text-center text-xs text-gray-500">
-        &copy; 2026 JumaPay Global. Fair Pricing & Instant Delivery.
+        &copy; 2026 JumaPay Global. Anti-Sanctions & Fair Pricing Store.
     </footer>
 
-    <!-- JS Logic -->
+    <!-- JS Logic & Multi-Language Engine -->
     <script>
         let currentBalance = 0.00;
+        let selectedProduct = { title: '', price: 0 };
 
         const translations = {
             ar: {
+                wallet: "المحفظة", topup: "شحن", admin: "الأدمن",
+                badge: "منصة عالمية كاسرة للحظر البنكي ورسوم الحروب والاستغلال",
                 heroTitle: "اشتري بطاقات الألعاب بسعرها الحقيقي وتسليم فوري",
-                heroSub: "وداعاً للتجار المستغلين والأسعار الفلكية. شحن محفظتك متاح عالمياً بالبوابات أو عبر وكلائنا الرسميين وشبكة الـ USDT.",
-                catTitle: "🔥 الكروت والأكواد بأسعار رسمية"
+                heroSub: "سواء كنت في دولة محظورة أو تعاني من استغلال البنوك والأسعار الفلكية، اشترِ مباشرة عبر شبكة USDT اللامركزية، وكلاء P2P المحليين، أو ببطاقتك وباي بال بالسعر الرسمي العادل.",
+                catTitle: "🔥 الكروت والأكواد بأسعار رسمية",
+                buyBtn: "شراء الآن 🛒"
             },
             en: {
+                wallet: "Wallet", topup: "Top Up", admin: "Admin",
+                badge: "Global Anti-Sanctions & Fair Pricing Platform",
                 heroTitle: "Buy Game Cards at Real Prices with Instant Delivery",
-                heroSub: "No more overpriced local resellers. Top up your wallet globally or via official agents & USDT.",
-                catTitle: "🔥 Official Priced Digital Cards"
+                heroSub: "Whether you face banking restrictions or war inflation, buy securely via decentralized USDT, local P2P agents, or cards at fair official rates.",
+                catTitle: "🔥 Official Priced Digital Cards",
+                buyBtn: "Buy Now 🛒"
+            },
+            ru: {
+                wallet: "Кошелек", topup: "Пополнить", admin: "Админ",
+                badge: "Глобальная платформа против санкций и за справедливые цены",
+                heroTitle: "Покупайте игровые карты по реальным ценам с мгновенной доставкой",
+                heroSub: "Покупайте напрямую через USDT, местных агентов P2P или банковские карты без переплат и санкций.",
+                catTitle: "🔥 Официальные цифровые карты",
+                buyBtn: "Купить 🛒"
+            },
+            fr: {
+                wallet: "Portefeuille", topup: "Recharger", admin: "Admin",
+                badge: "Plateforme mondiale anti-sanctions et prix équitables",
+                heroTitle: "Achetez des cartes de jeux au prix réel avec livraison instantanée",
+                heroSub: "Achetez en toute sécurité via USDT décentralisé, agents P2P locaux ou cartes bancaires sans surcoût.",
+                catTitle: "🔥 Cartes numériques officielles",
+                buyBtn: "Acheter 🛒"
+            },
+            es: {
+                wallet: "Billetera", topup: "Recargar", admin: "Admin",
+                badge: "Plataforma global anti-sanciones y precios justos",
+                heroTitle: "Compra tarjetas de juegos a precios reales con entrega instantánea",
+                heroSub: "Compra de forma segura mediante USDT descentralizado, agentes P2P locales o tarjetas sin comisiones abusivas.",
+                catTitle: "🔥 Tarjetas digitales oficiales",
+                buyBtn: "Comprar 🛒"
+            },
+            tr: {
+                wallet: "Cüzdan", topup: "Yükle", admin: "Yönetici",
+                badge: "Küresel Ambargo Karşıtı ve Adil Fiyatlandırma Platformu",
+                heroTitle: "Gerçek Fiyatlarla Anında Teslimat Oyun Kartları Satın Alın",
+                heroSub: "USDT, yerel P2P aracılar veya kartlarla ambargolara takılmadan adil fiyatlarla alışveriş yapın.",
+                catTitle: "🔥 Resmi Fiyatlı Dijital Kartlar",
+                buyBtn: "Satın Al 🛒"
             }
         };
 
         function switchLanguage(lang) {
             const html = document.documentElement;
-            html.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            html.dir = (lang === 'ar') ? 'rtl' : 'ltr';
             html.lang = lang;
 
-            if(translations[lang]) {
-                document.getElementById('hero-title').innerText = translations[lang].heroTitle;
-                document.getElementById('hero-subtitle').innerText = translations[lang].heroSub;
-                document.getElementById('cat-title').innerText = translations[lang].catTitle;
+            const t = translations[lang];
+            if(t) {
+                document.getElementById('lbl-wallet').innerText = t.wallet;
+                document.getElementById('lbl-topup').innerText = t.topup;
+                document.getElementById('lbl-admin').innerText = t.admin;
+                document.getElementById('hero-badge').innerText = t.badge;
+                document.getElementById('hero-title').innerText = t.heroTitle;
+                document.getElementById('hero-subtitle').innerText = t.heroSub;
+                document.getElementById('cat-title').innerText = t.catTitle;
+
+                // تحديث أزرار الشراء لكل الكروت
+                document.querySelectorAll('.btn-buy').forEach(btn => {
+                    btn.innerText = t.buyBtn;
+                });
             }
         }
 
         function updateBalanceDisplay() {
             document.getElementById('userBalance').innerText = `$${currentBalance.toFixed(2)}`;
+            document.getElementById('walletOptionBalance').innerText = `($${currentBalance.toFixed(2)})`;
         }
 
         function openTopUpModal() {
@@ -284,28 +368,49 @@
             document.getElementById('agentInfoBox').classList.toggle('hidden');
         }
 
+        function openCheckout(title, price) {
+            selectedProduct = { title, price };
+            document.getElementById('checkoutItemTitle').innerText = `شراء: ${title}`;
+            document.getElementById('checkoutItemPrice').innerText = `المبلغ المطلوب: $${price.toFixed(2)}`;
+            updateBalanceDisplay();
+            document.getElementById('checkoutModal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkoutModal').classList.add('hidden');
+        }
+
+        function processDirectCheckout(paymentMethod) {
+            if (paymentMethod === 'المحفظة الداخلية') {
+                if (currentBalance >= selectedProduct.price) {
+                    currentBalance -= selectedProduct.price;
+                    updateBalanceDisplay();
+                    finalizePurchase();
+                } else {
+                    alert(`عفواً! رصيدك غير كافٍ. اختر طريقة دفع بديلة (USDT أو الوكيل المحلي).`);
+                }
+            } else {
+                finalizePurchase();
+                alert(`تم تأكيد الطلب بنجاح عبر [${paymentMethod}] لـ ${selectedProduct.title}!`);
+            }
+        }
+
+        function finalizePurchase() {
+            closeCheckoutModal();
+            const randomCode = 'JUMA-' + Math.floor(1000 + Math.random() * 9000) + '-PASS';
+            document.getElementById('deliveredCode').innerText = randomCode;
+            document.getElementById('deliveryModal').classList.remove('hidden');
+        }
+
         function processTopUp(method) {
             const amount = parseFloat(document.getElementById('topUpAmount').value) || 0;
             if(amount > 0) {
                 currentBalance += amount;
                 updateBalanceDisplay();
-                alert(`تم شحن محفظتك بنجاح بـ $${amount.toFixed(2)} عبر [${method}] بالسعر الرسمي العادل!`);
+                alert(`تم شحن المحفظة بنجاح بـ $${amount.toFixed(2)} عبر [${method}] بالسعر العادل!`);
                 closeTopUpModal();
             } else {
                 alert("يرجى إدخال مبلغ صحيح.");
-            }
-        }
-
-        function buyProduct(title, price) {
-            if(currentBalance >= price) {
-                currentBalance -= price;
-                updateBalanceDisplay();
-                const randomCode = 'JUMA-' + Math.floor(1000 + Math.random() * 9000) + '-PASS';
-                document.getElementById('deliveredCode').innerText = randomCode;
-                document.getElementById('deliveryModal').classList.remove('hidden');
-            } else {
-                alert(`عفواً! رصيدك الحالي ($${currentBalance.toFixed(2)}) لا يكفي لشراء ${title} ($${price.toFixed(2)}). اضغط على "+ شحن رصيد".`);
-                openTopUpModal();
             }
         }
 
